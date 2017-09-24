@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Net.Http;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace ItsBot
 {
@@ -11,7 +10,7 @@ namespace ItsBot
         private const string ENDPOINT = "access_token";
 
         private readonly KeyValuePair<string, string> _grantType =
-            new KeyValuePair<string, string>("grant_type", "installed_client");
+            new KeyValuePair<string, string>("grant_type", "client_credentials");
 
         private const string USER_AGENT = "ItsBot-TokenAgent";
 
@@ -24,7 +23,13 @@ namespace ItsBot
         public TokenManager(ApiCredentials apiCredentials)
         {
             Credentials = apiCredentials ?? throw new ArgumentNullException(nameof(apiCredentials));
-            Api = new ApiCaller(USER_AGENT);
+
+            // Set up credentials to use with the api instance.
+            BasicAuthCreds basicAuthCreds = new BasicAuthCreds(
+                username: Credentials.ClientId,
+                password: Credentials.ClientSecret);
+
+            Api = new ApiCaller(USER_AGENT, basicAuthCreds);
         }
 
         public string Token => GetToken();
@@ -43,9 +48,24 @@ namespace ItsBot
                 _grantType
             });
 
-            var apiResponse = Api.CallAsync(ENDPOINT, formData).Result;
+            var apiResponse = Api.CallAsync<NewTokenResponse>(ENDPOINT, formData).Result;
 
-            return apiResponse;
+            return apiResponse.AccessToken;
         }
+    }
+
+    internal class NewTokenResponse
+    {
+        [JsonProperty(PropertyName = "access_token")]
+        public string AccessToken { get; set; }
+
+        [JsonProperty(PropertyName = "token_type")]
+        public string TokenType { get; set; }
+
+        [JsonProperty(PropertyName = "expires_in")]
+        public int ExpiresIn { get; set; }
+
+        [JsonProperty(PropertyName = "scope")]
+        public string Scope { get; set; }
     }
 }
