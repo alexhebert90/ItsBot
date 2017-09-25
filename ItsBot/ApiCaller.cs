@@ -9,18 +9,28 @@ namespace ItsBot
 {
     internal class ApiCaller
     {
-        /// <summary>
-        /// This should be the root url used for all api endpoints.
-        /// </summary>
-        private const string API_URL = "https://www.reddit.com/api/v1/";
+        
+
+
+        private string RootUrl { get; }
 
         private HttpClient Client { get; }
 
-        private static string FullUri(string partialUri)
-            => $"{API_URL}{partialUri}";
+        // Can be null.
+        private Func<AuthenticationHeaderValue> AuthPopulator { get; }
 
-        public ApiCaller(string userAgent, BasicAuthCreds basicAuth)
+        private string UriCombine(string partialUri)
         {
+            if (partialUri == null)
+                throw new ArgumentNullException(nameof(partialUri));
+
+            return $"{RootUrl}{partialUri}";
+        }
+
+        public ApiCaller(string rootUrl, string userAgent, BasicAuthCreds basicAuth)
+        {
+            RootUrl = rootUrl ?? throw new ArgumentNullException(nameof(rootUrl));
+
             // Since the use case for this is pretty specific, I'm going to require a
             // user agent to be provided and set.
             if (userAgent == null)
@@ -40,26 +50,49 @@ namespace ItsBot
         }
 
 
-        public ApiCaller(string userAgent) : this(userAgent, null) { }
-    
+        public ApiCaller(string rootUrl, string userAgent) : this(rootUrl, userAgent, basicAuth: null) { }
 
-        public async Task<string> CallAsync(string requestUri)
-            => await CallAsync(requestUri, null);
-
-        public async Task<string> CallAsync(string requestUri, FormUrlEncodedContent formContent)
+        public ApiCaller(string rootUrl, string userAgent, Func<AuthenticationHeaderValue> authPopulator) : this(rootUrl, userAgent)
         {
-            if (requestUri == null)
-                throw new ArgumentNullException(nameof(requestUri));
+            AuthPopulator = authPopulator;
+        }
+    
+        public async Task<string> GetAsync(string requestUri)
+        {
+            var fulluri = UriCombine(requestUri);
 
-            var result = await Client.PostAsync(FullUri(requestUri), formContent);
-
-            // ToDo: Examine status code and verify it was successful.
-
-            return await result.Content.ReadAsStringAsync();
+            return await CallAsync(async () => await Client.GetAsync(fulluri));
         }
 
-        public async Task<T> CallAsync<T>(string requestUri, FormUrlEncodedContent formContent)
-            => JsonConvert.DeserializeObject<T>(await CallAsync(requestUri, formContent));
+        public async Task<T> GetAsync<T>(string requestUri)
+            => JsonConvert.DeserializeObject<T>(await GetAsync(requestUri));
+
+        public async Task<string> PostAsync(string requestUri)
+            => await PostAsync(requestUri, null);
+
+        public async Task<string> PostAsync(string requestUri, FormUrlEncodedContent formContent)
+        {
+            var fullUri = UriCombine(requestUri);
+
+            return await CallAsync(async () => await Client.PostAsync(fullUri, formContent));
+        }
+
+        private async Task<string> CallAsync(Func<Task<HttpResponseMessage>> responseCall)
+        {
+            // Populate the auth header in time to make the request, if the client has opted to use this method.
+            if (AuthPopulator != null)
+                Client.DefaultRequestHeaders.Authorization = AuthPopulator();
+
+            var response = await responseCall();
+
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        // ToDo: Add in ability to "GET."
+        //private async 
+
+        public async Task<T> PostAsync<T>(string requestUri, FormUrlEncodedContent formContent)
+            => JsonConvert.DeserializeObject<T>(await PostAsync(requestUri, formContent));
     }
 
     internal class BasicAuthCreds
