@@ -19,6 +19,8 @@ namespace ItsBot
 
         private const string BEARER = "Bearer";
 
+        private const int SECONDS_BETWEEN_REQUESTS = 1;  
+
         private ApiCredentials Credentials { get; }
 
         private TokenManager TokenManager { get; }
@@ -27,20 +29,22 @@ namespace ItsBot
 
         private ItsDetector ItsDetector { get; }
 
+        private RateLimiter RateLimiter { get; }
+
         public Bot(ApiCredentials apiCredentials)
         {
             Credentials = apiCredentials ?? throw new ArgumentNullException(nameof(apiCredentials));
             TokenManager = new TokenManager(Credentials);
             Api = new ApiCaller(OATH_URL, Credentials.UserAgent, () => new AuthenticationHeaderValue(BEARER, TokenManager.Token));
             ItsDetector = new ItsDetector(new string[] { ITS, IT_S });
+            RateLimiter = new RateLimiter(TimeSpan.FromSeconds(SECONDS_BETWEEN_REQUESTS));
         }
 
 
         private async Task<CommentResults> GetCommentsAsync()
         {
             const string ENDPOINT = "r/all/comments?limit=100";
-
-            return await Api.GetAsync<CommentResults>(ENDPOINT);
+            return await RateLimiter.LimitAsync(async () => await Api.GetAsync<CommentResults>(ENDPOINT));
         }
 
         public async Task<FilteredCommentMatchCollection> GetFilteredCommentsAsync()
