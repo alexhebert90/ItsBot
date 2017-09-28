@@ -19,7 +19,9 @@ namespace ItsBot
 
         private const string BEARER = "Bearer";
 
-        private const int SECONDS_BETWEEN_REQUESTS = 1;  
+        // ToDo: Fine tune this number.
+
+        private const double SECONDS_BETWEEN_REQUESTS = 1.4;
 
         private ApiCredentials Credentials { get; }
 

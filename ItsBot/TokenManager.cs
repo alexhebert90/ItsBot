@@ -38,7 +38,7 @@ namespace ItsBot
             Credentials = apiCredentials ?? throw new ArgumentNullException(nameof(apiCredentials));
 
             // Set up credentials to use with the api instance.
-            BasicAuthCreds basicAuthCreds = new BasicAuthCreds(
+            BasicAuthCredentials basicAuthCreds = new BasicAuthCredentials(
                 username: Credentials.ClientId,
                 password: Credentials.ClientSecret);
 
