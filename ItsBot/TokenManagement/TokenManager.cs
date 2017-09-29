@@ -1,29 +1,47 @@
 ﻿using System;
 using System.Net.Http;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
-namespace ItsBot
+namespace ItsBot.TokenManagement
 {
+    /// <summary>
+    /// Class responsible for retrieving new api tokens and managing when it is time to retrieve a new one.
+    /// </summary>
     internal class TokenManager
     {
+        /// <summary>
+        /// The root url for obtaining OAuth tokens from reddit.
+        /// </summary>
         private const string API_URL = "https://www.reddit.com/api/v1/";
 
+        /// <summary>
+        /// The actual endpoint off of the root url we will be calling to get a token.
+        /// </summary>
         private const string ENDPOINT = "access_token";
 
+        /// <summary>
+        /// Contains a collection of form values to send with every request.
+        /// </summary>
         private readonly KeyValuePair<string, string> _grantType =
             new KeyValuePair<string, string>("grant_type", "client_credentials");
 
         /// <summary>
         /// The amount of time before a token is actually set to expire before fetching a new one, in minutes.
         /// (Arbitrary selection of 1.5 minutes).
+        /// So if the token expires in 60 minutes, retrieve a new one at 58.5 minutes, in other words.
         /// </summary>
         private const double EXPIRATION_BUFFER_MINUTES = 1.5;
 
         // ToDo: DeviceId
 
+        /// <summary>
+        /// Holds the instance of credentials that will be used as the authorization fields to make requests.
+        /// </summary>
         private ApiCredentials Credentials { get; }
 
+        /// <summary>
+        /// Holds an instance to a class that will actually perform api calls that the manager requires.
+        /// </summary>
         private ApiCaller Api { get; }
 
 
@@ -108,36 +126,4 @@ namespace ItsBot
         } 
     }
 
-    internal class SuccessfulTokenResult
-    {
-        public NewTokenResponse TokenResponse { get; }
-
-        public DateTime TimeGotten { get; }
-
-        public DateTime TokenExpiresAt { get; }
-
-        public SuccessfulTokenResult(
-            NewTokenResponse newTokenResponse)
-        {
-            TokenResponse = newTokenResponse ?? throw new ArgumentNullException(nameof(newTokenResponse));
-            TimeGotten = DateTime.UtcNow;
-            TokenExpiresAt = TimeGotten + TimeSpan.FromMinutes(TokenResponse.ExpiresIn);
-        }
-
-    }
-
-    internal class NewTokenResponse
-    {
-        [JsonProperty(PropertyName = "access_token")]
-        public string AccessToken { get; set; }
-
-        [JsonProperty(PropertyName = "token_type")]
-        public string TokenType { get; set; }
-
-        [JsonProperty(PropertyName = "expires_in")]
-        public int ExpiresIn { get; set; }
-
-        [JsonProperty(PropertyName = "scope")]
-        public string Scope { get; set; }
-    }
 }
