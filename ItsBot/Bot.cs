@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ItsBot.TokenManagement;
+using ItsBot.WordDetection;
 
 namespace ItsBot
 {
@@ -30,7 +31,7 @@ namespace ItsBot
 
         private ApiCaller Api { get; }
 
-        private ItsDetector ItsDetector { get; }
+        private WordDetector ItsDetector { get; }
 
         private RateLimiter RateLimiter { get; }
 
@@ -39,7 +40,7 @@ namespace ItsBot
             Credentials = apiCredentials ?? throw new ArgumentNullException(nameof(apiCredentials));
             TokenManager = new TokenManager(Credentials);
             Api = new ApiCaller(OATH_URL, Credentials.UserAgent, () => new AuthenticationHeaderValue(BEARER, TokenManager.Token));
-            ItsDetector = new ItsDetector(new string[] { ITS, IT_S });
+            ItsDetector = new WordDetector(new WordDetectorSettings(new string[] { ITS, IT_S }));
             RateLimiter = new RateLimiter(TimeSpan.FromSeconds(SECONDS_BETWEEN_REQUESTS));
         }
 

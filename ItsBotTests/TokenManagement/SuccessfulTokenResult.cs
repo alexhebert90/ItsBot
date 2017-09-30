@@ -74,5 +74,6 @@ namespace ItsBotTests.TokenManagement
 
             Assert.AreEqual(tokenResponse, result.TokenResponse);
         }
+
     }
 }
