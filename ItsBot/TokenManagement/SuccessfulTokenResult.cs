@@ -35,7 +35,7 @@ namespace ItsBot.TokenManagement
             DateTime? tokenRetrievedAt)
         {
             TokenResponse = newTokenResponse ?? throw new ArgumentNullException(nameof(newTokenResponse));
-            TokenExpiresAt = (tokenRetrievedAt ?? DateTime.UtcNow) + TimeSpan.FromMinutes(TokenResponse.ExpiresIn);
+            TokenExpiresAt = (tokenRetrievedAt ?? DateTime.Now) + TimeSpan.FromMinutes(TokenResponse.ExpiresIn);
         }
     }
 

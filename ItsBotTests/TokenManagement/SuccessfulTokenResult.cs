@@ -29,7 +29,7 @@ namespace ItsBotTests.TokenManagement
         {
             const int TESTMINUTECOUNT = 453;
 
-            DateTime timeFetched = DateTime.UtcNow;
+            DateTime timeFetched = DateTime.Now;
 
             DateTime expected = timeFetched + TimeSpan.FromMinutes(TESTMINUTECOUNT);
 
@@ -55,7 +55,7 @@ namespace ItsBotTests.TokenManagement
                 ExpiresIn = TESTMINUTECOUNT
             });
 
-            var expected = DateTime.UtcNow + TimeSpan.FromMinutes(TESTMINUTECOUNT);
+            var expected = DateTime.Now + TimeSpan.FromMinutes(TESTMINUTECOUNT);
 
             TimeSpan difference = expected - result.TokenExpiresAt;
 

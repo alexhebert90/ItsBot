@@ -97,7 +97,7 @@ namespace ItsBot.TokenManagement
 
             var exactTokenExpiresAt = token.TokenExpiresAt;
 
-            if(DateTime.UtcNow >= exactTokenExpiresAt - TimeSpan.FromMinutes(EXPIRATION_BUFFER_MINUTES))
+            if(DateTime.Now >= exactTokenExpiresAt - TimeSpan.FromMinutes(EXPIRATION_BUFFER_MINUTES))
             {
                 return true;
             }

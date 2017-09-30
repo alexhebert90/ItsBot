@@ -9,19 +9,19 @@ namespace ItsBot
 {
     /// <summary>
     /// A class responsible for making calls to a particular API service.
-    /// In the context of this application, it is the central passthrough point for retrieving both
+    /// In the context of this application, it is the central pass-through point for retrieving both
     /// OAuth tokens and comments.
     /// </summary>
     internal class ApiCaller
     {
         /// <summary>
-        /// Allows the client to be initalized with a root URL to prefix all subsequent requests with.
+        /// Allows the client to be initialized with a root URL to prefix all subsequent requests with.
         /// Simplifies code of api calls.
         /// </summary>
         private string RootUrl { get; }
 
         /// <summary>
-        /// Holds a single instance of a resusable .NET <see cref="HttpClient"/> used to actually make the requests.
+        /// Holds a single instance of a reusable .NET <see cref="HttpClient"/> used to actually make the requests.
         /// </summary>
         private HttpClient Client { get; }
 
@@ -47,7 +47,7 @@ namespace ItsBot
         }
 
         /// <summary>
-        /// Conains shared logic that all present and future public functions need to pass through.
+        /// Contains shared logic that all present and future public functions need to pass through.
         /// </summary>
         /// <param name="responseCall"></param>
         /// <returns></returns>
@@ -96,7 +96,7 @@ namespace ItsBot
         }
 
         /// <summary>
-        /// Main constructor that allows for a static set of auth credentials that will not change for the lifetime of the intance.
+        /// Main constructor that allows for a static set of auth credentials that will not change for the lifetime of the instance.
         /// <para>See <see cref="TokenManagement"/> class as an example implementation.</para>
         /// </summary>
         /// <param name="rootUrl"></param>
