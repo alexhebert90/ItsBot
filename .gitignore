@@ -38,3 +38,6 @@ Thumbs.db
 
 # dotCover
 *.dotCover
+BotApp/appsettings.json
+.vs/config/applicationhost.config
+.vs/ItsBot/v15/sqlite3/storage.ide

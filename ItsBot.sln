@@ -6,6 +6,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItsBot", "ItsBot\ItsBot.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItsBotTests", "ItsBotTests\ItsBotTests.csproj", "{79FF2914-3A99-40C0-A471-0A9F322D1C83}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotApp", "BotApp\BotApp.csproj", "{89BA25F3-ED77-4FC0-97DD-F98447CE34E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{79FF2914-3A99-40C0-A471-0A9F322D1C83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79FF2914-3A99-40C0-A471-0A9F322D1C83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79FF2914-3A99-40C0-A471-0A9F322D1C83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89BA25F3-ED77-4FC0-97DD-F98447CE34E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89BA25F3-ED77-4FC0-97DD-F98447CE34E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89BA25F3-ED77-4FC0-97DD-F98447CE34E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89BA25F3-ED77-4FC0-97DD-F98447CE34E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
