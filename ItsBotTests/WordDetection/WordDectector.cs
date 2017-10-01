@@ -50,20 +50,20 @@ namespace ItsBotTests.WordDetection
         [TestMethod]
         public void ResultKeysMatchInput()
         {
-            const string KEY1 = "Lopsided";
-            const string KEY2 = "Forever here";
-            const string KEY3 = "audio.";
+            const string Key1 = "Lopsided";
+            const string Key2 = "Forever here";
+            const string Key3 = "audio.";
 
             var detector = new WordDetector(
                 new WordDetectorSettings(
-                    new string[] { KEY1, KEY2, KEY3 }));
+                    new string[] { Key1, Key2, Key3 }));
 
             var result = detector.Detect("This text doesn't matter, yet again.");
 
             // The test will fail under this point if the point I'm trying to prove isn't accurate.
-            var a = result[KEY1];
-            var b = result[KEY2];
-            var c = result[KEY3];
+            var a = result[Key1];
+            var b = result[Key2];
+            var c = result[Key3];
         }
 
         /// <summary>
@@ -79,6 +79,99 @@ namespace ItsBotTests.WordDetection
             var result = detector.Detect("I'll put cat and bat in here just for fun.");
 
             Assert.IsFalse(result.Values.Any(v => v == null));
+        }
+
+        [TestMethod]
+        public void SingleWordTest()
+        {
+            const string SearchTerm = "life";
+
+            var detector = new WordDetector(
+                new WordDetectorSettings(SearchTerm));
+
+            // Only whole words should be matched case insensitively, so this text should contain
+            // 3 matches.
+            const string TestSentence = 
+                "Life can be a challenge, which is why LifeTime is now offering" +
+                " a new life package deal to enhance your life. What a time to be alive.";
+
+            var result = detector.Detect(TestSentence)[SearchTerm];
+
+            // Verify total count.
+            Assert.AreEqual(result.Count, 3);
+
+            // Yes, I did count these indexes by hand. Felt pretty stupid while doing it, too,
+            // but by the end of the first line I realized it was too late to give up.
+            Assert.AreEqual(result[0].Index, 0);
+            Assert.AreEqual(result[0].Value, "Life");
+
+            Assert.AreEqual(result[1].Index, 69);
+            Assert.AreEqual(result[1].Value, "life");
+
+            Assert.AreEqual(result[2].Index, 103);
+            Assert.AreEqual(result[2].Value, "life");
+        }
+
+        [TestMethod]
+        public void MultiWordAdvanced()
+        {
+            const string Search1 = "Pumpkin";
+            const string Search2 = "Pineapple";
+
+            var detector = new WordDetector(
+                new WordDetectorSettings(new string[] { Search1, Search2 }));
+
+            const string TestSentence =
+                "Pumpkin Pineapple pumpkin pineapple pUmpkin pineApple " +
+                "pumpkin pIneapple pumpkin. Pineapple. But seriously, pumpkin.";
+
+            var result = detector.Detect(TestSentence);
+
+            var pumpkin = result[Search1];
+            var pineapple = result[Search2];
+
+            // I also did these indexes by hand and using math...impressed yet?
+
+            // Pumpkin
+            Assert.AreEqual(pumpkin.Count, 6);
+
+            Assert.AreEqual(pumpkin[0].Index, 0);
+            Assert.AreEqual(pumpkin[0].Value, "Pumpkin");
+
+            Assert.AreEqual(pumpkin[1].Index, 18);
+            Assert.AreEqual(pumpkin[1].Value, "pumpkin");
+
+            Assert.AreEqual(pumpkin[2].Index, 36);
+            Assert.AreEqual(pumpkin[2].Value, "pUmpkin");
+
+            Assert.AreEqual(pumpkin[3].Index, 54);
+            Assert.AreEqual(pumpkin[3].Value, "pumpkin");
+
+            Assert.AreEqual(pumpkin[4].Index, 72);
+            Assert.AreEqual(pumpkin[4].Value, "pumpkin");
+
+            Assert.AreEqual(pumpkin[5].Index, 107);
+            Assert.AreEqual(pumpkin[5].Value, "pumpkin");
+
+            //==============================
+            // Pineapple
+
+            Assert.AreEqual(pineapple.Count, 5);
+
+            Assert.AreEqual(pineapple[0].Index, 8);
+            Assert.AreEqual(pineapple[0].Value, "Pineapple");
+                            
+            Assert.AreEqual(pineapple[1].Index, 26);
+            Assert.AreEqual(pineapple[1].Value, "pineapple");
+                            
+            Assert.AreEqual(pineapple[2].Index, 44);
+            Assert.AreEqual(pineapple[2].Value, "pineApple");
+                            
+            Assert.AreEqual(pineapple[3].Index, 62);
+            Assert.AreEqual(pineapple[3].Value, "pIneapple");
+                            
+            Assert.AreEqual(pineapple[4].Index, 81);
+            Assert.AreEqual(pineapple[4].Value, "Pineapple");                         
         }
     }
 }

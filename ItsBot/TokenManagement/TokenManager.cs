@@ -13,12 +13,12 @@ namespace ItsBot.TokenManagement
         /// <summary>
         /// The root url for obtaining OAuth tokens from reddit.
         /// </summary>
-        private const string API_URL = "https://www.reddit.com/api/v1/";
+        private const string ApiUrl = "https://www.reddit.com/api/v1/";
 
         /// <summary>
         /// The actual endpoint off of the root url we will be calling to get a token.
         /// </summary>
-        private const string ENDPOINT = "access_token";
+        private const string Endpoint = "access_token";
 
         /// <summary>
         /// Contains a collection of form values to send with every request.
@@ -31,7 +31,7 @@ namespace ItsBot.TokenManagement
         /// (Arbitrary selection of 1.5 minutes).
         /// So if the token expires in 60 minutes, retrieve a new one at 58.5 minutes, in other words.
         /// </summary>
-        private const double EXPIRATION_BUFFER_MINUTES = 1.5;
+        private const double ExpirationBufferMinutes = 1.5;
 
         // ToDo: DeviceId
 
@@ -61,7 +61,7 @@ namespace ItsBot.TokenManagement
                 username: Credentials.ClientId,
                 password: Credentials.ClientSecret);
 
-            Api = new ApiCaller(API_URL, Credentials.UserAgent, basicAuthCreds);
+            Api = new ApiCaller(ApiUrl, Credentials.UserAgent, basicAuthCreds);
         }
 
         public string Token => GetToken();
@@ -98,7 +98,7 @@ namespace ItsBot.TokenManagement
 
             var exactTokenExpiresAt = token.TokenExpiresAt;
 
-            if(DateTime.Now >= exactTokenExpiresAt - TimeSpan.FromMinutes(EXPIRATION_BUFFER_MINUTES))
+            if(DateTime.Now >= exactTokenExpiresAt - TimeSpan.FromMinutes(ExpirationBufferMinutes))
             {
                 return true;
             }
@@ -115,7 +115,7 @@ namespace ItsBot.TokenManagement
 
 
             var apiResponse = 
-                Api.PostAsync<NewTokenResponse>(ENDPOINT, formData).Result;
+                Api.PostAsync<NewTokenResponse>(Endpoint, formData).Result;
 
             // ToDo: Don't leave this like this. I just don't know what to do yet
             // If any of this somehow fails.

@@ -11,7 +11,7 @@ namespace ItsBotTests.ApiCalls
     [TestClass]
     public class BasicAuthCredentialsTests
     {
-        private const string BASIC = "Basic";
+        private const string Basic = "Basic";
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -35,12 +35,12 @@ namespace ItsBotTests.ApiCalls
             var test1 = new
                 BasicAuthCredentials("TestUser", "TestPassword");
 
-            Assert.AreEqual(test1.AsAuthHeader(), new AuthenticationHeaderValue(BASIC, "VGVzdFVzZXI6VGVzdFBhc3N3b3Jk"), "Auth header output is not as expected.");
+            Assert.AreEqual(test1.AsAuthHeader(), new AuthenticationHeaderValue(Basic, "VGVzdFVzZXI6VGVzdFBhc3N3b3Jk"), "Auth header output is not as expected.");
 
             var test2 = new
                 BasicAuthCredentials("GeddyLee", "playsPrettyGoodBass");
 
-            Assert.AreEqual(test2.AsAuthHeader(), new AuthenticationHeaderValue(BASIC, "R2VkZHlMZWU6cGxheXNQcmV0dHlHb29kQmFzcw=="), "Auth header output is not as expected.");
+            Assert.AreEqual(test2.AsAuthHeader(), new AuthenticationHeaderValue(Basic, "R2VkZHlMZWU6cGxheXNQcmV0dHlHb29kQmFzcw=="), "Auth header output is not as expected.");
         }
     }
 }

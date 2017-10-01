@@ -27,15 +27,15 @@ namespace ItsBotTests.TokenManagement
         [TestMethod]
         public void ValidateExpiresOn()
         {
-            const int TESTMINUTECOUNT = 453;
+            const int TestMinuteCount = 453;
 
             DateTime timeFetched = DateTime.Now;
 
-            DateTime expected = timeFetched + TimeSpan.FromMinutes(TESTMINUTECOUNT);
+            DateTime expected = timeFetched + TimeSpan.FromMinutes(TestMinuteCount);
 
             var result = new SuccessfulTokenResult(new NewTokenResponse
             {
-                ExpiresIn = TESTMINUTECOUNT
+                ExpiresIn = TestMinuteCount
             }, 
             tokenRetrievedAt: timeFetched);
 
@@ -48,14 +48,14 @@ namespace ItsBotTests.TokenManagement
         [TestMethod]
         public void ValidateExpiresOnNonExact()
         {
-            const int TESTMINUTECOUNT = 24;
+            const int TestMinuteCount = 24;
 
             var result = new SuccessfulTokenResult(new NewTokenResponse
             {
-                ExpiresIn = TESTMINUTECOUNT
+                ExpiresIn = TestMinuteCount
             });
 
-            var expected = DateTime.Now + TimeSpan.FromMinutes(TESTMINUTECOUNT);
+            var expected = DateTime.Now + TimeSpan.FromMinutes(TestMinuteCount);
 
             TimeSpan difference = expected - result.TokenExpiresAt;
 

@@ -15,16 +15,16 @@ namespace ItsBot
     /// </summary>
     public class Bot
     {
-        internal const string ITS = "its";
-        internal const string IT_S = "it's";
+        internal const string Its = "its";
+        internal const string It_s = "it's";
 
-        private const string OATH_URL = "https://oauth.reddit.com/";
+        private const string OAuthUrl = "https://oauth.reddit.com/";
 
-        private const string BEARER = "Bearer";
+        private const string Bearer = "Bearer";
 
         // ToDo: Fine tune this number.
 
-        private const double SECONDS_BETWEEN_REQUESTS = 1.4;
+        private const double SecondsBetweenRequests = 1.4;
 
         private BotCredentials Credentials { get; }
 
@@ -40,16 +40,16 @@ namespace ItsBot
         {
             Credentials = apiCredentials ?? throw new ArgumentNullException(nameof(apiCredentials));
             TokenManager = new TokenManager(Credentials);
-            Api = new ApiCaller(OATH_URL, Credentials.UserAgent, () => new AuthenticationHeaderValue(BEARER, TokenManager.Token));
-            ItsDetector = new WordDetector(new WordDetectorSettings(new string[] { ITS, IT_S }));
-            RateLimiter = new RateLimiter(TimeSpan.FromSeconds(SECONDS_BETWEEN_REQUESTS));
+            Api = new ApiCaller(OAuthUrl, Credentials.UserAgent, () => new AuthenticationHeaderValue(Bearer, TokenManager.Token));
+            ItsDetector = new WordDetector(new WordDetectorSettings(new string[] { Its, It_s }));
+            RateLimiter = new RateLimiter(TimeSpan.FromSeconds(SecondsBetweenRequests));
         }
 
 
         private async Task<CommentResults> GetCommentsAsync()
         {
-            const string ENDPOINT = "r/all/comments?limit=100";
-            return await RateLimiter.LimitAsync(async () => await Api.GetAsync<CommentResults>(ENDPOINT));
+            const string Endpoint = "r/all/comments?limit=100";
+            return await RateLimiter.LimitAsync(async () => await Api.GetAsync<CommentResults>(Endpoint));
         }
 
         public async Task<FilteredCommentMatchCollection> GetFilteredCommentsAsync()
@@ -109,8 +109,8 @@ namespace ItsBot
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
 
-            ItsMatches = collection[Bot.ITS] ?? throw new ArgumentNullException(nameof(collection));
-            It_sMatches = collection[Bot.IT_S] ?? throw new ArgumentNullException(nameof(collection));
+            ItsMatches = collection[Bot.Its] ?? throw new ArgumentNullException(nameof(collection));
+            It_sMatches = collection[Bot.It_s] ?? throw new ArgumentNullException(nameof(collection));
         }
     }
 

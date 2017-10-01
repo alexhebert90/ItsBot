@@ -36,15 +36,15 @@ namespace ItsBotTests
         [TestMethod]
         public void ValidArgumentsMapped()
         {
-            const string CLIENT_ID = "ClientId";
-            const string CLIENT_SECRET = "ClientSecret";
-            const string USER_AGENT = "UserAgent";
+            const string ClientId = "ClientId";
+            const string ClientSecret = "ClientSecret";
+            const string UserAgent = "UserAgent";
 
-            var creds = new BotCredentials(CLIENT_ID, CLIENT_SECRET, USER_AGENT);
+            var creds = new BotCredentials(ClientId, ClientSecret, UserAgent);
 
-            Assert.AreEqual(CLIENT_ID, creds.ClientId);
-            Assert.AreEqual(CLIENT_SECRET, creds.ClientSecret);
-            Assert.AreEqual(USER_AGENT, creds.UserAgent);
+            Assert.AreEqual(ClientId, creds.ClientId);
+            Assert.AreEqual(ClientSecret, creds.ClientSecret);
+            Assert.AreEqual(UserAgent, creds.UserAgent);
         }
 
     }

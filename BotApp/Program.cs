@@ -20,18 +20,18 @@ namespace BotApp
             Configuration = builder.Build();
         }
 
-        private const string CLIENT_ID = "ClientId";
-        private const string CLIENT_SECRET = "ClientSecret";
-        private const string USER_AGENT = "UserAgent";
+        private const string ClientId = "ClientId";
+        private const string ClientSecret = "ClientSecret";
+        private const string UserAgent = "UserAgent";
 
         public static async Task Main(string[] args)
         {
             // Set up configuration.
             Configure();
 
-            string clientId = Configuration[CLIENT_ID];
-            string clientSecret = Configuration[CLIENT_SECRET];
-            string userAgent = Configuration[USER_AGENT];
+            string clientId = Configuration[ClientId];
+            string clientSecret = Configuration[ClientSecret];
+            string userAgent = Configuration[UserAgent];
 
             Console.WriteLine("Press any key to start.");
             Console.ReadLine();

@@ -26,7 +26,7 @@ namespace ItsBot.ApiCalls
         /// </summary>
         /// <returns></returns>
         public AuthenticationHeaderValue AsAuthHeader()
-            => new AuthenticationHeaderValue(BASIC, EncodeUserNameAndPassword());
+            => new AuthenticationHeaderValue(Basic, EncodeUserNameAndPassword());
 
         /// <summary>
         /// Encodes the username and password into a format expected by basic authentication.
@@ -44,7 +44,7 @@ namespace ItsBot.ApiCalls
         /// <summary>
         /// #Basic
         /// </summary>
-        private const string BASIC = "Basic";
+        private const string Basic = "Basic";
 
         /// <summary>
         /// Holds the username portion of the header value.
