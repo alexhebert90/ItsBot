@@ -36,7 +36,7 @@ namespace BotApp
             Console.WriteLine("Press any key to start.");
             Console.ReadLine();
 
-            var bot = new Bot(new ApiCredentials(clientId, clientSecret, userAgent));
+            var bot = new Bot(new BotCredentials(clientId, clientSecret, userAgent));
 
             while(true)
             {

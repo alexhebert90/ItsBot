@@ -1,9 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ItsBot;
 using System;
 using System.Net.Http.Headers;
+using ItsBot.ApiCalls;
 
-namespace ItsBotTests
+namespace ItsBotTests.ApiCalls
 {
     /// <summary>
     /// Tests against the <see cref="BasicAuthCredentials"/> class.
@@ -30,7 +30,7 @@ namespace ItsBotTests
         }
 
         [TestMethod]
-        public void HeaderValueOutput()
+        public void CorrectHeaderGenerated()
         {
             var test1 = new
                 BasicAuthCredentials("TestUser", "TestPassword");

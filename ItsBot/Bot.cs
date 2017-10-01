@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ItsBot.TokenManagement;
 using ItsBot.WordDetection;
+using ItsBot.ApiCalls;
 
 namespace ItsBot
 {
@@ -25,7 +26,7 @@ namespace ItsBot
 
         private const double SECONDS_BETWEEN_REQUESTS = 1.4;
 
-        private ApiCredentials Credentials { get; }
+        private BotCredentials Credentials { get; }
 
         private TokenManager TokenManager { get; }
 
@@ -35,7 +36,7 @@ namespace ItsBot
 
         private RateLimiter RateLimiter { get; }
 
-        public Bot(ApiCredentials apiCredentials)
+        public Bot(BotCredentials apiCredentials)
         {
             Credentials = apiCredentials ?? throw new ArgumentNullException(nameof(apiCredentials));
             TokenManager = new TokenManager(Credentials);
@@ -116,52 +117,6 @@ namespace ItsBot
 
 
 
-    public class ApiCredentials
-    {
-		public string ClientId { get; }
-		public string ClientSecret { get; }
-
-        public string UserAgent { get; }
-
-		public ApiCredentials(string clientId, string clientSecret, string userAgent)
-		{
-			ClientId = clientId ?? throw new ArgumentNullException(nameof(clientId));
-			ClientSecret = clientSecret ?? throw new ArgumentNullException(nameof(clientSecret));
-            UserAgent = userAgent ?? throw new ArgumentNullException(nameof(userAgent));
-		}
-    }
-
-    public class CommentResults
-    {
-        public CommentData Data { get; set; }
-    }
-
-    public class CommentData
-    {
-        public List<CommentDataChildren> Children { get; set; }
-
-        public string After { get; set; }
-
-        public string Before { get; set; }
-    }
-
-    public class CommentDataChildren
-    {
-        public string Kind { get; set; }
-
-        public CommentChildData Data { get; set; }
-    }
-
-    public class CommentChildData
-    {
-        public string Author { get; set; }
-
-        public string Body { get; set; }
-
-        public string SubReddit { get; set; }
-
-        public long Created_Utc { get; set; }
-    }
 
 
 

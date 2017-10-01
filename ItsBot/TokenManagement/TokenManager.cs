@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Collections.Generic;
+using ItsBot.ApiCalls;
 
 namespace ItsBot.TokenManagement
 {
@@ -37,7 +38,7 @@ namespace ItsBot.TokenManagement
         /// <summary>
         /// Holds the instance of credentials that will be used as the authorization fields to make requests.
         /// </summary>
-        private ApiCredentials Credentials { get; }
+        private BotCredentials Credentials { get; }
 
         /// <summary>
         /// Holds an instance to a class that will actually perform api calls that the manager requires.
@@ -51,7 +52,7 @@ namespace ItsBot.TokenManagement
         private SuccessfulTokenResult LastValidNewToken { get; set; }
 
 
-        public TokenManager(ApiCredentials apiCredentials)
+        public TokenManager(BotCredentials apiCredentials)
         {
             Credentials = apiCredentials ?? throw new ArgumentNullException(nameof(apiCredentials));
 

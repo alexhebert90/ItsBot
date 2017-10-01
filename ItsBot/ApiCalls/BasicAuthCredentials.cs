@@ -2,7 +2,7 @@
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace ItsBot
+namespace ItsBot.ApiCalls
 {
     /// <summary>
     /// A wrapper class for storing and providing "Basic" Http auth header values.
