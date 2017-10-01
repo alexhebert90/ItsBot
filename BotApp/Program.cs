@@ -41,8 +41,8 @@ namespace BotApp
             while(true)
             {
                 var result = await bot.GetFilteredCommentsAsync();
-                Console.WriteLine($"Its: {result.Collection.Sum(i => i.ItsMatches.Count)}");
-                Console.WriteLine($"It's: {result.Collection.Sum(i => i.It_sMatches.Count)}");
+                Console.WriteLine($"Its: {result.Collection.Sum(i => i.ItsMatches.Collection.Count)}");
+                Console.WriteLine($"It's: {result.Collection.Sum(i => i.It_sMatches.Collection.Count)}");
 
                 Console.WriteLine();
                 Console.WriteLine("Waiting...");

@@ -27,6 +27,8 @@ namespace ItsBot
 
     public class CommentChildData
     {
+        public string Id { get; set; }
+
         public string Author { get; set; }
 
         public string Body { get; set; }

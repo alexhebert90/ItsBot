@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ItsBot.WordDetection;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ItsBot
@@ -12,14 +14,63 @@ namespace ItsBot
     {
         // Stateful class that will make sure comments don't get duplicated!
 
-        public CommentFilter() { }
+        public CommentFilter(WordDetector wordDetector)
+        {
+            WordDetector = wordDetector ?? throw new ArgumentNullException(nameof(wordDetector));
+            RecentCommentsIds = new FixedSizeQueue<string>(RecentCommentIdBufferSize);
+        }
 
 
         public void Filter(CommentResults commentResults)
         {
             if (commentResults == null)
                 throw new ArgumentNullException(nameof(commentResults));
+
+            
+            // First, we need to get all ids in our buffer into a constant
+            // lookup structure for quick comparisons.
+            var recentIdHash = 
+                new HashSet<string>(RecentCommentsIds.Items);
+
+            foreach(var comment in commentResults.Data.Children)
+            {
+                var commentId = comment.Data.Id;
+
+                if(!recentIdHash.Contains(commentId))
+                {
+                    // Only continue processing the current comment if it hasn't already been processed.
+
+                }
+            }
+
         }
 
+        //private bool RecentlyProcessed(CommentData comment)
+        //{
+        //    if (comment == null)
+        //        throw new ArgumentNullException(nameof(comment));
+
+        //    // ToDo: Use repeated hash.
+
+        //}
+
+        //private bool ContainsWordMatch(CommentData comment)
+        //{
+        //    if (comment == null)
+        //        throw new ArgumentNullException(nameof(comment));
+
+        //    return 
+        //}
+
+
+        private const int RecentCommentIdBufferSize = 500;
+
+        private WordDetector WordDetector { get; }
+
+        private FixedSizeQueue<string> RecentCommentsIds { get; }
     }
+
+
+
+
 }

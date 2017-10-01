@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace ItsBot.WordDetection
@@ -25,18 +24,17 @@ namespace ItsBot.WordDetection
         /// </summary>
         /// <param name="commentData"></param>
         /// <returns></returns>
-        public Dictionary<string, MatchCollection> Detect(string commentData)
+        public WordDetectorResult Detect(string commentData)
         {
             if (commentData == null)
                 throw new ArgumentNullException(nameof(commentData));
 
-            var detectionResult = new Dictionary<string, MatchCollection>();
+            var detectionResult = new WordDetectorResult();
 
-            foreach(var match in Settings.MatchCollection)
+            foreach (var match in Settings.MatchCollection)
             {
-                var itsPosMatches = Regex.Matches(commentData, $"\\b{match}\\b", RegexOptions.IgnoreCase);
-
-                detectionResult[match] = itsPosMatches;
+                var currentMatchWordMatches = Regex.Matches(commentData, $"\\b{match}\\b", RegexOptions.IgnoreCase);
+                detectionResult.AddResult(match, new MatchResultCollection(currentMatchWordMatches));
             }
 
             return detectionResult;

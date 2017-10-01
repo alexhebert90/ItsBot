@@ -36,7 +36,7 @@ namespace ItsBotTests
         {
             // The definition of arbitrary. For this test, I'm suggesting that the limited function should
             // execute at least 87% of the times it could in a best-case scenario in order to be considered valid.
-            double finalCallTolerancePerecentage = 87.0;
+            const double FinalCallTolerancePerecentage = 87.0;
 
             // Set the amount of time to let this test run for total.
             var testDuration = TimeSpan.FromSeconds(3.23);
@@ -67,7 +67,7 @@ namespace ItsBotTests
 
             // Make sure the total number of calls made was still close to the maximum possible in the time window, with some tolerance
             // to handle the unknown.
-            Assert.IsTrue(callCountPercentageOfMax > finalCallTolerancePerecentage);
+            Assert.IsTrue(callCountPercentageOfMax > FinalCallTolerancePerecentage);
         }
     }
 }

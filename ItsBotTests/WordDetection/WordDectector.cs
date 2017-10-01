@@ -41,7 +41,7 @@ namespace ItsBotTests.WordDetection
 
             var result = detector.Detect("Unimportant text to search.");
 
-            Assert.AreEqual(result.Count, 4);
+            Assert.AreEqual(result.MatchWordCount, 4);
         }
 
         /// <summary>
@@ -54,32 +54,41 @@ namespace ItsBotTests.WordDetection
             const string Key2 = "Forever here";
             const string Key3 = "audio.";
 
+            const string KeyNotInInstance = "I'm Not Used";
+
             var detector = new WordDetector(
                 new WordDetectorSettings(
                     new string[] { Key1, Key2, Key3 }));
 
             var result = detector.Detect("This text doesn't matter, yet again.");
 
-            // The test will fail under this point if the point I'm trying to prove isn't accurate.
-            var a = result[Key1];
-            var b = result[Key2];
-            var c = result[Key3];
+            // We expect non-null results for all keys we passed into the instance.
+            Assert.IsNotNull(result.GetMatchesFor(Key1));
+            Assert.IsNotNull(result.GetMatchesFor(Key2));
+            Assert.IsNotNull(result.GetMatchesFor(Key3));
+
+            // But for a key that was not passed into the instance, we do expect null.
+            Assert.IsNull(result.GetMatchesFor(KeyNotInInstance));
         }
 
-        /// <summary>
-        /// Just verifying that every match object gotten back is not assigned to a null reference.
-        /// </summary>
-        [TestMethod]
-        public void MatchCollectionsNeverNull()
-        {
-            var detector = new WordDetector(
-                new WordDetectorSettings(
-                    new string[] { "anywhere", "bat", "cat", "dog", "egg" }));
 
-            var result = detector.Detect("I'll put cat and bat in here just for fun.");
+        // ToDo: This test no longer makes sense and will be validated by validating the
+        // WordDetectorResult constructor arguments.
 
-            Assert.IsFalse(result.Values.Any(v => v == null));
-        }
+        ///// <summary>
+        ///// Just verifying that every match object gotten back is not assigned to a null reference.
+        ///// </summary>
+        //[TestMethod]
+        //public void MatchCollectionsNeverNull()
+        //{
+        //    var detector = new WordDetector(
+        //        new WordDetectorSettings(
+        //            new string[] { "anywhere", "bat", "cat", "dog", "egg" }));
+
+        //    var result = detector.Detect("I'll put cat and bat in here just for fun.");
+
+        //    Assert.IsFalse(result.Values.Any(v => v == null));
+        //}
 
         [TestMethod]
         public void SingleWordTest()
@@ -95,7 +104,7 @@ namespace ItsBotTests.WordDetection
                 "Life can be a challenge, which is why LifeTime is now offering" +
                 " a new life package deal to enhance your life. What a time to be alive.";
 
-            var result = detector.Detect(TestSentence)[SearchTerm];
+            var result = detector.Detect(TestSentence).GetMatchesFor(SearchTerm).Collection;
 
             // Verify total count.
             Assert.AreEqual(result.Count, 3);
@@ -127,8 +136,8 @@ namespace ItsBotTests.WordDetection
 
             var result = detector.Detect(TestSentence);
 
-            var pumpkin = result[Search1];
-            var pineapple = result[Search2];
+            var pumpkin = result.GetMatchesFor(Search1).Collection;
+            var pineapple = result.GetMatchesFor(Search2).Collection;
 
             // I also did these indexes by hand and using math...impressed yet?
 

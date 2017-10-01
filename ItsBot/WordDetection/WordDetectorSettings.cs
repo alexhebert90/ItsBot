@@ -5,6 +5,16 @@ using System.Linq;
 
 namespace ItsBot.WordDetection
 {
+    // ToDo: I'm starting to doubt whether this class is even needed. 
+    // I might merge it in with WordDetector and move all of its tests there as well, then 
+    // move WordDetector up to the root level.
+
+    // I made it because I thought I'd have to share the settings between several classes, 
+    // but now I'm not really sure
+    // why I thought that...
+
+    //======================
+
     /// <summary>
     /// Encapsulates the settings for a word detector so that its settings may be shared by calling classes.
     /// </summary>

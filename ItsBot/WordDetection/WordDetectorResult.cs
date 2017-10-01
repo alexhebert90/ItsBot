@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+namespace ItsBot.WordDetection
+{
+    // ToDo: !!!!
+
+    // This class should not remain public! It is temporarily that way
+    // So that I do not break the current build as I continue updating.
+
+    public class WordDetectorResult
+    {
+        private Dictionary<string, MatchResultCollection> BackingCollection { get; }
+
+        public WordDetectorResult()
+        {
+            BackingCollection = new Dictionary<string, MatchResultCollection>();
+        }
+
+        public void AddResult(string matchWord, MatchResultCollection matches)
+        {
+            if (matchWord == null)
+                throw new ArgumentNullException(nameof(matchWord));
+
+            if (matches == null)
+                throw new ArgumentNullException(nameof(matches));
+
+            BackingCollection[SanitizeKey(matchWord)] = matches;
+        }
+
+        /// <summary>
+        /// Returns the number of unique word matches total for this result.
+        /// </summary>
+        public int MatchWordCount =>
+            BackingCollection.Count;
+
+
+        /// <summary>
+        /// Returns the total number of matches across all match words.
+        /// </summary>
+        public int TotalMatches
+            => BackingCollection.Values.Sum(i => i.Collection.Count);
+
+
+        /// <summary>
+        /// Returns matches for a specified match string.
+        /// <para>Returns null if key does not exist.</para>
+        /// </summary>
+        /// <param name="matchWord"></param>
+        /// <returns></returns>
+        public MatchResultCollection GetMatchesFor(string matchWord)
+        {
+            if (matchWord == null)
+                throw new ArgumentNullException(nameof(matchWord));
+
+            // Return null if no matches found.
+            BackingCollection.TryGetValue(SanitizeKey(matchWord), out var result);
+            return result;
+        }
+
+        private static string SanitizeKey(string key)
+            => key.ToUpper();
+    }
+}

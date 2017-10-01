@@ -86,7 +86,7 @@ namespace ItsBot
             commentAndMatches = commentAndMatches ?? new List<CommentAndMatches>();
 
             Collection =
-                commentAndMatches.Where(c => c.ItsMatches.Count > 0 || c.It_sMatches.Count > 0).
+                commentAndMatches.Where(c => c.ItsMatches.Collection.Count > 0 || c.It_sMatches.Collection.Count > 0).
                 ToList();
         }
     }
@@ -98,19 +98,19 @@ namespace ItsBot
     {
         public CommentChildData Comment { get; }
 
-        public MatchCollection ItsMatches { get; }
+        public MatchResultCollection ItsMatches { get; }
 
-        public MatchCollection It_sMatches { get; }
+        public MatchResultCollection It_sMatches { get; }
 
-        public CommentAndMatches(CommentChildData comment, Dictionary<string, MatchCollection> collection)
+        public CommentAndMatches(CommentChildData comment, WordDetectorResult collection)
         {
             Comment = comment ?? throw new ArgumentNullException(nameof(comment));
 
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
 
-            ItsMatches = collection[Bot.Its] ?? throw new ArgumentNullException(nameof(collection));
-            It_sMatches = collection[Bot.It_s] ?? throw new ArgumentNullException(nameof(collection));
+            ItsMatches = collection.GetMatchesFor(Bot.Its) ?? throw new ArgumentNullException(nameof(collection));
+            It_sMatches = collection.GetMatchesFor(Bot.It_s) ?? throw new ArgumentNullException(nameof(collection));
         }
     }
 
