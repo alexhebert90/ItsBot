@@ -27,7 +27,7 @@ namespace ItsBot.WordDetection
             if (matches == null)
                 throw new ArgumentNullException(nameof(matches));
 
-            BackingCollection[SanitizeKey(matchWord)] = matches;
+            BackingCollection[CaseInsensitiveKey(matchWord)] = matches;
         }
 
         /// <summary>
@@ -56,11 +56,17 @@ namespace ItsBot.WordDetection
                 throw new ArgumentNullException(nameof(matchWord));
 
             // Return null if no matches found.
-            BackingCollection.TryGetValue(SanitizeKey(matchWord), out var result);
+            BackingCollection.TryGetValue(CaseInsensitiveKey(matchWord), out var result);
             return result;
         }
 
-        private static string SanitizeKey(string key)
+        /// <summary>
+        /// Helper to guarantee key manipulations run through the same logic.
+        /// Used to make case insensitive keys.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        private static string CaseInsensitiveKey(string key)
             => key.ToUpper();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -15,6 +16,9 @@ namespace ItsBot.WordDetection
 
         public MatchResultCollection(IEnumerable<Match> matchCollection)
         {
+            if (matchCollection == null)
+                throw new ArgumentNullException(nameof(matchCollection));
+
             var collection = new List<MatchResult>();
 
             foreach(var match in matchCollection)
@@ -25,7 +29,6 @@ namespace ItsBot.WordDetection
             Collection = collection.AsReadOnly();
         }
 
-        // This needs to be tested...
         public MatchResultCollection(MatchCollection matchCollection) :
             this(matchCollection.OfType<Match>())
         { }
