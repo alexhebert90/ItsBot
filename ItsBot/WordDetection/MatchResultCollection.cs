@@ -7,7 +7,7 @@ namespace ItsBot.WordDetection
 {
     // ToDo: Make internal once it's possible.
 
-    public class MatchResultCollection
+    internal class MatchResultCollection
     {
         public IReadOnlyList<MatchResult> Collection { get; }
 

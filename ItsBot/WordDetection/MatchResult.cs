@@ -5,7 +5,7 @@ namespace ItsBot.WordDetection
 {
     // ToDo: Make internal once it's possible
 
-    public class MatchResult
+    internal class MatchResult
     {
         public int Index { get; }
 

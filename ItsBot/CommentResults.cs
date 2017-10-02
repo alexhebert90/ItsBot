@@ -4,12 +4,12 @@ namespace ItsBot
 {
     // These POCOs relate to the responses gotten back from Reddit when fetching comments.
 
-    public class CommentResults
+    internal class CommentResults
     {
         public CommentData Data { get; set; }
     }
 
-    public class CommentData
+    internal class CommentData
     {
         public List<CommentDataChildren> Children { get; set; }
 
@@ -18,14 +18,14 @@ namespace ItsBot
         public string Before { get; set; }
     }
 
-    public class CommentDataChildren
+    internal class CommentDataChildren
     {
         public string Kind { get; set; }
 
         public CommentChildData Data { get; set; }
     }
 
-    public class CommentChildData
+    internal class CommentChildData
     {
         public string Id { get; set; }
 

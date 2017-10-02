@@ -19,12 +19,12 @@ namespace ItsBot
         }
 
 
-        public void Enqueue(T item)
+        public virtual void Enqueue(T item)
         {
             BackingQueue.Enqueue(item);
 
             if (BackingQueue.Count > MaxSize)
-                BackingQueue.Dequeue();
+                Dequeue();
         }
 
         // The items could technically expose the original collection
@@ -42,6 +42,12 @@ namespace ItsBot
         /// </summary>
         public int Count
             => BackingQueue.Count;
+
+
+        protected virtual T Dequeue()
+        {
+            return BackingQueue.Dequeue();
+        }
 
         /// <summary>
         /// Holds the backing queue behind the instance.

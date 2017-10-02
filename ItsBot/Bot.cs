@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ItsBot.TokenManagement;
 using ItsBot.WordDetection;
@@ -15,8 +12,10 @@ namespace ItsBot
     /// </summary>
     public class Bot
     {
-        internal const string Its = "its";
-        internal const string It_s = "it's";
+        // The search list should come from a database in the future.
+        // I think I'm going to start by only searching for "it's," as correcting
+        // "its" isn't as useful.
+        private static readonly string[] SearchWords = { "It's" };
 
         private const string OAuthUrl = "https://oauth.reddit.com/";
 
@@ -32,17 +31,17 @@ namespace ItsBot
 
         private ApiCaller Api { get; }
 
-        private WordDetector ItsDetector { get; }
-
         private RateLimiter RateLimiter { get; }
+
+        private CommentFilter CommentFilter { get; }
 
         public Bot(BotCredentials apiCredentials)
         {
             Credentials = apiCredentials ?? throw new ArgumentNullException(nameof(apiCredentials));
             TokenManager = new TokenManager(Credentials);
             Api = new ApiCaller(OAuthUrl, Credentials.UserAgent, () => new AuthenticationHeaderValue(Bearer, TokenManager.Token));
-            ItsDetector = new WordDetector(new WordDetectorSettings(new string[] { Its, It_s }));
             RateLimiter = new RateLimiter(TimeSpan.FromSeconds(SecondsBetweenRequests));
+            CommentFilter = new CommentFilter(new WordDetector(new WordDetectorSettings(SearchWords)));
         }
 
 
@@ -52,72 +51,15 @@ namespace ItsBot
             return await RateLimiter.LimitAsync(async () => await Api.GetAsync<CommentResults>(Endpoint));
         }
 
-        public async Task<FilteredCommentMatchCollection> GetFilteredCommentsAsync()
+        public async Task RunOnceAsync()
         {
-            var commentsResult = await GetCommentsAsync();
-            return FindMatchesInChildren(commentsResult);
+            // This will probably have its own loop in the future.
+            // For now I'll leave the main loop in the console app.
+
+            var commentsResults = await GetCommentsAsync();
+            CommentFilter.Filter(commentsResults);
         }
 
-        private FilteredCommentMatchCollection FindMatchesInChildren(CommentResults results)
-        {
-            var commentAndMatches = new List<CommentAndMatches>();
-
-            var comments = results.Data.Children;
-
-            foreach(var comment in comments)
-            {
-                var matchResult = ItsDetector.Detect(comment.Data.Body);
-
-                commentAndMatches.Add(new CommentAndMatches(comment.Data, matchResult));
-            }
-
-            return new FilteredCommentMatchCollection(commentAndMatches);
-        }
     }
-
-
-
-    public class FilteredCommentMatchCollection
-    {
-        public IReadOnlyList<CommentAndMatches> Collection { get; }
-        
-        public FilteredCommentMatchCollection(IEnumerable<CommentAndMatches> commentAndMatches)
-        {
-            commentAndMatches = commentAndMatches ?? new List<CommentAndMatches>();
-
-            Collection =
-                commentAndMatches.Where(c => c.ItsMatches.Collection.Count > 0 || c.It_sMatches.Collection.Count > 0).
-                ToList();
-        }
-    }
-
-
-
-
-    public class CommentAndMatches
-    {
-        public CommentChildData Comment { get; }
-
-        public MatchResultCollection ItsMatches { get; }
-
-        public MatchResultCollection It_sMatches { get; }
-
-        public CommentAndMatches(CommentChildData comment, WordDetectorResult collection)
-        {
-            Comment = comment ?? throw new ArgumentNullException(nameof(comment));
-
-            if (collection == null)
-                throw new ArgumentNullException(nameof(collection));
-
-            ItsMatches = collection.GetMatchesFor(Bot.Its) ?? throw new ArgumentNullException(nameof(collection));
-            It_sMatches = collection.GetMatchesFor(Bot.It_s) ?? throw new ArgumentNullException(nameof(collection));
-        }
-    }
-
-
-
-
-
-
 
 }

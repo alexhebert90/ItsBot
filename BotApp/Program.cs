@@ -1,7 +1,6 @@
 ﻿using System;
 using ItsBot;
 using System.Threading.Tasks;
-using System.Linq;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
@@ -40,9 +39,7 @@ namespace BotApp
 
             while(true)
             {
-                var result = await bot.GetFilteredCommentsAsync();
-                Console.WriteLine($"Its: {result.Collection.Sum(i => i.ItsMatches.Collection.Count)}");
-                Console.WriteLine($"It's: {result.Collection.Sum(i => i.It_sMatches.Collection.Count)}");
+                await bot.RunOnceAsync();
 
                 Console.WriteLine();
                 Console.WriteLine("Waiting...");

@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace ItsBot.WordDetection
 {
-    // ToDo: !!!!
-
-    // This class should not remain public! It is temporarily that way
-    // So that I do not break the current build as I continue updating.
-
-    public class WordDetectorResult
+    internal class WordDetectorResult
     {
         private Dictionary<string, MatchResultCollection> BackingCollection { get; }
 

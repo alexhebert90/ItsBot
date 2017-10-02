@@ -1,8 +1,5 @@
 ﻿using ItsBot.WordDetection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ItsBot
 {
@@ -17,7 +14,7 @@ namespace ItsBot
         public CommentFilter(WordDetector wordDetector)
         {
             WordDetector = wordDetector ?? throw new ArgumentNullException(nameof(wordDetector));
-            RecentCommentsIds = new FixedSizeQueue<string>(RecentCommentIdBufferSize);
+            RecentCommentsIds = new HashedFixedSizeQueue<string>(RecentCommentIdBufferSize);
         }
 
 
@@ -29,45 +26,62 @@ namespace ItsBot
             
             // First, we need to get all ids in our buffer into a constant
             // lookup structure for quick comparisons.
-            var recentIdHash = 
-                new HashSet<string>(RecentCommentsIds.Items);
 
-            foreach(var comment in commentResults.Data.Children)
+            foreach(var commentChild in commentResults.Data.Children)
             {
-                var commentId = comment.Data.Id;
+                var comment = commentChild.Data;
 
-                if(!recentIdHash.Contains(commentId))
+                if (
+                    NotRecentlyProcessed(comment) &&
+                    ContainsWordMatch(comment, out var wordDetectResult))
                 {
-                    // Only continue processing the current comment if it hasn't already been processed.
-
+                    ProcessComment(comment);
                 }
             }
-
         }
 
-        //private bool RecentlyProcessed(CommentData comment)
-        //{
-        //    if (comment == null)
-        //        throw new ArgumentNullException(nameof(comment));
+        private void ProcessComment(CommentChildData comment)
+        {
+            // TEMPORARY MEASURE!! REMOVE IN FINAL!!!
+            Console.WriteLine($"{comment.Author} : {comment.Id}");
+            Console.WriteLine();
 
-        //    // ToDo: Use repeated hash.
 
-        //}
+            RecentCommentsIds.Enqueue(comment.Id);
+        }
 
-        //private bool ContainsWordMatch(CommentData comment)
-        //{
-        //    if (comment == null)
-        //        throw new ArgumentNullException(nameof(comment));
+        private bool NotRecentlyProcessed(CommentChildData comment)
+        {
+            if (comment == null)
+                throw new ArgumentNullException(nameof(comment));
 
-        //    return 
-        //}
+            return !RecentCommentsIds.Contains(comment.Id);
+        }
+
+        private bool ContainsWordMatch(CommentChildData comment, out WordDetectorResult result)
+        {
+            if (comment == null)
+                throw new ArgumentNullException(nameof(comment));
+
+            // Assign a value to result to return.
+            result = default;
+
+            var match = WordDetector.Detect(comment.Body);
+
+            bool containsWordMatch = match.TotalMatches > 0;
+
+            if (containsWordMatch)
+                result = match;
+
+            return containsWordMatch;
+        }
 
 
         private const int RecentCommentIdBufferSize = 500;
 
         private WordDetector WordDetector { get; }
 
-        private FixedSizeQueue<string> RecentCommentsIds { get; }
+        private HashedFixedSizeQueue<string> RecentCommentsIds { get; }
     }
 
 
