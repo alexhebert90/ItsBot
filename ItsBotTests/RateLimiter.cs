@@ -3,7 +3,7 @@ using ItsBot;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 
-namespace ItsBotTests
+namespace ItsBot.Tests
 {
     /// <summary>
     /// Tests against the <see cref="RateLimiter"/> class.

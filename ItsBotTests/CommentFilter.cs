@@ -3,7 +3,7 @@ using ItsBot.WordDetection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace ItsBotTests
+namespace ItsBot.Tests
 {
     /// <summary>
     /// Tests around the <see cref="CommentFilter"/> class.

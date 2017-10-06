@@ -1,8 +1,7 @@
-﻿using ItsBot;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace ItsBotTests
+namespace ItsBot.Tests
 {
     /// <summary>
     /// Tests against the <see cref="HashedFixedSizeQueue{T}"/> class.

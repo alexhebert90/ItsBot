@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace ItsBotTests
+namespace ItsBot.Tests
 {
     /// <summary>
     /// Tests related to the <see cref="BotCredentials"/> class.

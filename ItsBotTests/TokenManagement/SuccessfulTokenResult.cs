@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace ItsBotTests.TokenManagement
+namespace ItsBot.Tests.TokenManagement
 {
     /// <summary>
     /// Tests against the <see cref="SuccessfulTokenResult"/> class.

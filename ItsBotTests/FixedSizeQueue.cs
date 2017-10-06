@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace ItsBotTests
+namespace ItsBot.Tests
 {
     /// <summary>
     /// Tests around the <see cref="FixedSizeQueue{T}"/> class.

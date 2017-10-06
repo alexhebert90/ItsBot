@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace ItsBotTests.WordDetection
+namespace ItsBot.Tests.WordDetection
 {
     /// <summary>
     /// Tests tied to the <see cref="WordDetectorSettings"/> class.

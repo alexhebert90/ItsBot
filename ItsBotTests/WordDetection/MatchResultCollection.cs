@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace ItsBotTests.WordDetection
+namespace ItsBot.Tests.WordDetection
 {
     /// <summary>
     /// Tests around the <see cref="MatchResultCollection"/> class.

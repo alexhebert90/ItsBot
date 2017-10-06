@@ -10,7 +10,7 @@ namespace ItsBot
     /// <summary>
     /// Its bot.
     /// </summary>
-    public class Bot
+    public class Bot : IBot
     {
         // The search list should come from a database in the future.
         // I think I'm going to start by only searching for "it's," as correcting

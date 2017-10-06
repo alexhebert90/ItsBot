@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 
-namespace ItsBotTests.WordDetection
+namespace ItsBot.Tests.WordDetection
 {
     /// <summary>
     /// Tests around the <see cref="WordDetector"/> class.

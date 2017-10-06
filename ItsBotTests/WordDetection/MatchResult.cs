@@ -3,7 +3,7 @@ using System;
 using ItsBot.WordDetection;
 using System.Text.RegularExpressions;
 
-namespace ItsBotTests.WordDetection
+namespace ItsBot.Tests.WordDetection
 {
     /// <summary>
     /// Tests around the <see cref="MatchResult"/> class.

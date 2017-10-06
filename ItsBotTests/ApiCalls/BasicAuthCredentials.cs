@@ -3,7 +3,7 @@ using System;
 using System.Net.Http.Headers;
 using ItsBot.ApiCalls;
 
-namespace ItsBotTests.ApiCalls
+namespace ItsBot.Tests.ApiCalls
 {
     /// <summary>
     /// Tests against the <see cref="BasicAuthCredentials"/> class.
